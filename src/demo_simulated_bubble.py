@@ -12,6 +12,8 @@ To use on REAL data instead, replace `make_series()` with a one-liner:
 (any clean price Series with a datetime or integer index works).
 """
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -19,6 +21,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from psy_bubble_detector import detect_bubbles, episodes
+
+# Write the validation plot to examples/ (next to the committed copy),
+# regardless of the directory the demo is run from.
+OUT_PATH = Path(__file__).resolve().parent.parent / "examples" / "bubble_detection_demo.png"
 
 
 def make_series(T=200, b_start=100, b_end=140, rho=1.06, seed=7):
@@ -79,8 +85,8 @@ def main():
     ax2.legend(loc="upper left", fontsize=9)
 
     fig.tight_layout()
-    fig.savefig("bubble_detection_demo.png", dpi=140)
-    print("\nSaved plot -> bubble_detection_demo.png")
+    fig.savefig(OUT_PATH, dpi=140)
+    print(f"\nSaved plot -> {OUT_PATH}")
 
 
 if __name__ == "__main__":

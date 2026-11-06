@@ -18,3 +18,10 @@ env/
 *.csv
 data/
 !examples/*.png
+
+# result tables are small and part of the record
+!results/*.csv
+
+# intermediate pipeline state
+results/*.pkl
+__pycache__/

@@ -1,42 +1,22 @@
-# Publishing this to GitHub
+# Publishing updates to GitHub
 
-This repo is ready to push. I can't push it for you (that needs your GitHub login,
-which I don't handle), but here's the whole process — about four commands.
+The repo already exists at github.com/Justins10000x/AI-cap-cyc-fragility. To publish v3:
 
-## 1. Before you publish (30 seconds)
-- Open `LICENSE` and replace `<YOUR NAME>` with your name. (Or swap MIT for another
-  license if you prefer.)
-- Optional: skim `README.md` and adjust the project name / wording to taste.
+1. Unzip the v3 package. Copy **everything inside it** over your local clone of the repo
+   (replace files when asked). If you have no local clone:
+   `git clone https://github.com/Justins10000x/AI-cap-cyc-fragility.git`
+2. In a terminal, from inside the repo folder:
 
-## 2. Create an empty repo on GitHub
-Go to github.com → **New repository** → name it (e.g. `ai-capital-cycle-fragility`)
-→ **do not** add a README, .gitignore, or license (this repo already has them) → Create.
-Copy the repo URL it shows you.
-
-## 3. Initialize and push (run inside the unzipped folder)
 ```bash
-cd ai-capital-cycle-fragility
-
-git init
-git add .
-git commit -m "Initial commit: GSADF bubble detector + research roadmap"
-
-git branch -M main
-git remote add origin https://github.com/<YOUR-USERNAME>/<YOUR-REPO>.git
-git push -u origin main
+git add -A
+git commit -m "v3: robust null, family-wise dating, fundamentals mode; withdraw v2 results" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+git push
 ```
-Replace `<YOUR-USERNAME>/<YOUR-REPO>` with the URL from step 2.
 
-That's it — committing under your own git identity from the first commit, so the
-authorship is clean for a portfolio.
+Before pushing, open `LICENSE` and replace `<YOUR NAME>` with your name (it is still a placeholder).
 
-## Notes
-- If git asks who you are first, set it once:
-  `git config --global user.name "Your Name"` and
-  `git config --global user.email "you@example.com"`.
-- GitHub now uses tokens, not passwords, for HTTPS pushes. If prompted for a password,
-  paste a **personal access token** (GitHub → Settings → Developer settings → Tokens),
-  or use the GitHub CLI (`gh auth login`) / an SSH remote instead. Generate and handle
-  that token yourself — never paste it into a chat.
-- `.gitignore` already excludes `*.csv` and a `data/` folder, so any real price data
-  you pull stays out of the public repo by default.
+GitHub asks for a personal access token rather than your password on push. Create one under
+Settings → Developer settings → Personal access tokens, or run `gh auth login` once. Never
+paste a token into a chat.
+
+`data/` is git-ignored, so the market-data CSVs stay local; `results/*.csv` are committed on purpose.

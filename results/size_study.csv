@@ -1,0 +1,4 @@
+dgp,gsadf_v2,gsadf_v3,stamp_v2,stamp_v2_pointwise_wild,stamp_v3
+A  Gaussian RW (v2's assumption),0.0375,0.0475,0.83,0.6875,0.1425
+B  GARCH-t RW (NVDA-calibrated),0.1675,0.06,0.9075,0.7675,0.1725
+C  NVDA's actual vol path,0.1925,0.0625,0.8925,0.7325,0.1775
