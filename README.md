@@ -8,6 +8,20 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
+## Latest: circular-funding ratio v1 (9 Nov 2026)
+
+![circular-funding v1](results/circular_v1.png)
+
+- **Nvidia's money in the AI ecosystem rose from ~2% of a year's revenue to 66% in twelve
+  months**: $47.9B of private stakes, $42.8B of listed stakes and $108.5B of guarantees
+  (maximum exposure) at July 2026, against $303B of trailing revenue.
+- **In the April 2026 quarter, 23% of Nvidia's pre-tax profit came from gains on its
+  investments**, largely in companies that buy its chips.
+- **CoreWeave funds about three-quarters of its build-out with outside money**; debt quadrupled
+  in 18 months to $35.6B and interest takes about a fifth of revenue every quarter.
+- An upper bound, not proof the revenue is fake; limits and next steps in
+  [`results/RESULTS_circular_v1.md`](results/RESULTS_circular_v1.md).
+
 ## Current status (v3.1, 6 Nov 2026 — the day after the AI sell-off)
 
 ![v3.1](results/v31_nov2026.png)
@@ -52,13 +66,15 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 15 tests, ~1 min: every simulation claim above
+pytest -q                                  # 20 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
 python src/oos_realtime.py                 # v3.1 real-time replay -> results/oos_realtime.csv
 python src/nvda_valuation.py               # v3.1 price-to-revenue test
 python src/make_figure_v31.py              # -> results/v31_nov2026.png
+python src/circular_funding.py             # circular-funding ratio v1 -> results/circular_*.csv
+python src/make_figure_circular.py         # -> results/circular_v1.png
 python src/run_v3.py                       # tests, FDR, episodes  -> results/*.csv   (~3 min)
 python src/size_study.py 400               # false-positive study  -> results/size_study.csv
 python src/boom_vs_bubble.py 300           # boom vs bubble        -> results/boom_vs_bubble.csv
@@ -80,16 +96,18 @@ src/
   oos_realtime.py          v3.1 week-by-week real-time replay, frozen v3 code
   nvda_valuation.py        v3.1 price-to-revenue test, same-window control, decomposition
   make_figure_v31.py
+  circular_funding.py      circular-funding ratio v1 from SEC company facts (self-reconciling)
+  make_figure_circular.py
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
-tests/                     the claims, as tests (test_v3.py, test_valuation.py)
+tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)
 results/                   RESULTS_v3.md, tables, figure
 docs/                      roadmap, Sep-2026 addendum, referee report on v2
 ```
 
 ## Next
 
-1. **The circular-funding ratio**: how much of Nvidia's revenue is financed by Nvidia itself
-   (equity stakes in customers, capacity backstops). The valuation test (v3.1) now hinges on it.
+1. **Circular-funding ratio v2**: add the filing text (who the stakes and guarantees are in,
+   customer concentration), the hyperscalers' capex vs cash flow, and Nvidia's October quarter.
 2. **Replicate PSY (2015)** on Shiller's S&P 500 price–dividend data. Recovering their published
    dot-com dates is the strongest external validation available.
 3. Add P/E alongside P/S, and the hyperscalers and neoclouds, to the valuation ladder.

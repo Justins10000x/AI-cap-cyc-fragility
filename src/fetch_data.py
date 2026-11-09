@@ -10,6 +10,7 @@ Writes (overwriting older copies):
                                             and dividend-adjusted, so src/ code reads
                                             them unchanged
     data/nvda_revenue*.json                 Nvidia revenue, SEC XBRL API (two tags)
+    data/{nvda,crwv}_companyfacts.json      all XBRL facts filed by Nvidia / CoreWeave
     data/fedfunds.csv, data/hy_spread.csv   Fed funds rate and high-yield credit
                                             spread, from FRED
 
@@ -31,7 +32,13 @@ _SEC = "https://data.sec.gov/api/xbrl/companyconcept/CIK0001045810/us-gaap/"
 # so both tags are needed for a continuous, correctly dated series.
 SEC_FILES = {"nvda_revenue.json": _SEC + "Revenues.json",
              "nvda_revenue_asc606.json":
-                 _SEC + "RevenueFromContractWithCustomerExcludingAssessedTax.json"}
+                 _SEC + "RevenueFromContractWithCustomerExcludingAssessedTax.json",
+             # every XBRL fact each company has filed: the raw material for the
+             # circular-funding ratio (investments, cloud commitments, debt, capex)
+             "nvda_companyfacts.json":
+                 "https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json",
+             "crwv_companyfacts.json":
+                 "https://data.sec.gov/api/xbrl/companyfacts/CIK0001769628.json"}
 FRED = {"fedfunds.csv": "FEDFUNDS", "hy_spread.csv": "BAMLH0A0HYM2"}
 
 
@@ -85,11 +92,14 @@ def fetch_sec(outdir: str, contact: str | None) -> bool:
     for fname, url in SEC_FILES.items():
         try:
             raw = _get(url, {"User-Agent": contact, "Accept-Encoding": "identity"})
-            n = len(json.loads(raw).get("units", {}).get("USD", []))
+            d = json.loads(raw)
+            n = (len(d["units"].get("USD", [])) if "units" in d else
+                 sum(len(ns) for ns in d.get("facts", {}).values()))
             path = os.path.join(outdir, fname)
             with open(path, "wb") as f:
                 f.write(raw)
-            print(f"  {fname:26} {n:>4} facts -> {path}")
+            label = "facts" if "units" in d else "tags"
+            print(f"  {fname:26} {n:>5} {label} -> {path}")
         except Exception as e:
             ok = False
             print(f"  {fname:26} FAILED: {e}")
