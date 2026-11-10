@@ -11,6 +11,7 @@ Writes (overwriting older copies):
                                             them unchanged
     data/nvda_revenue*.json                 Nvidia revenue, SEC XBRL API (two tags)
     data/{nvda,crwv}_companyfacts.json      all XBRL facts filed by Nvidia / CoreWeave
+    data/{msft,googl,amzn,meta,orcl}_companyfacts.json   the same for the hyperscalers
     data/fedfunds.csv, data/hy_spread.csv   Fed funds rate and high-yield credit
                                             spread, from FRED
 
@@ -39,6 +40,12 @@ SEC_FILES = {"nvda_revenue.json": _SEC + "Revenues.json",
                  "https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json",
              "crwv_companyfacts.json":
                  "https://data.sec.gov/api/xbrl/companyfacts/CIK0001769628.json"}
+# the hyperscalers: Nvidia's biggest buyers (capex vs cash flow, debt, leases)
+HYPERSCALERS = {"msft": "0000789019", "googl": "0001652044", "amzn": "0001018724",
+                "meta": "0001326801", "orcl": "0001341439"}
+SEC_FILES.update({f"{k}_companyfacts.json":
+                  f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json"
+                  for k, cik in HYPERSCALERS.items()})
 FRED = {"fedfunds.csv": "FEDFUNDS", "hy_spread.csv": "BAMLH0A0HYM2"}
 
 

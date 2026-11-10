@@ -8,7 +8,19 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: circular-funding ratio v1 (9 Nov 2026)
+## Latest: the hyperscalers (11 Nov 2026)
+
+![hyperscalers](results/hyperscalers_v1.png)
+
+- **The five hyperscalers combined now spend more on capex than their businesses generate in
+  cash**: $230B against $199B in 2026 Q3 (116%), up from 63% a year earlier and 50% two years ago.
+- **Four of five are above 100%** (Amazon 182%, Oracle 123%, Alphabet 121%, Meta 104%);
+  Microsoft, at 68%, is the exception. Their combined long-term debt rose from about $231B to
+  $540B in a year.
+- Demand for Nvidia's chips now leans on credit at every level of the loop. Limits in
+  [`results/RESULTS_hyperscalers_v1.md`](results/RESULTS_hyperscalers_v1.md).
+
+## Circular-funding ratio v1 (9 Nov 2026)
 
 ![circular-funding v1](results/circular_v1.png)
 
@@ -66,7 +78,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 20 tests, ~1 min: every simulation claim above
+pytest -q                                  # 22 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -98,6 +110,8 @@ src/
   make_figure_v31.py
   circular_funding.py      circular-funding ratio v1 from SEC company facts (self-reconciling)
   make_figure_circular.py
+  hyperscalers.py          hyperscaler capex vs operating cash flow and debt
+  make_figure_hyperscalers.py
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
 tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)
 results/                   RESULTS_v3.md, tables, figure

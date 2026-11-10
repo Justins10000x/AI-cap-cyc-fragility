@@ -61,3 +61,22 @@ def test_missing_tags_are_not_zero(tmp_path):
     assert out.listed_stakes.isna().all() and out.guarantee_max.isna().all()
     assert not out.exposure_complete.any()
     assert np.allclose(out.exposure_pct_ttm_revenue, [0.10, 0.20])   # known parts only, flagged
+
+
+def test_reconcile_since_skips_old_restated_years():
+    B = 1e9
+    def year(s, ends, vals):
+        return [F(e, v * B, "2099-01-01", s) for e, v in zip(ends, vals)]
+    old = year("2015-01-01", ["2015-03-31", "2015-06-30", "2015-09-30", "2015-12-31"], [1, 2, 3, 4])
+    old.append(F("2015-12-31", 5 * B, "2016-02-01", "2015-10-01"))        # restated Q4: breaks 2015
+    new = year("2024-01-01", ["2024-03-31", "2024-06-30", "2024-09-30", "2024-12-31"], [1, 2, 3, 4])
+    f = _facts({"X": old + new})
+    with pytest.raises(AssertionError):
+        cf.reconcile(f, "X")
+    assert cf.reconcile(f, "X", since="2023-06-01") == 1
+
+
+def test_calendar_quarter_maps_oracle_fiscal_ends():
+    import hyperscalers as hs
+    q = hs.calendar_quarter(pd.to_datetime(["2026-08-31", "2026-09-30", "2026-05-31"]))
+    assert [str(x) for x in q] == ["2026Q3", "2026Q3", "2026Q2"]

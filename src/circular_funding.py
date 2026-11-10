@@ -79,9 +79,10 @@ def quarterly(facts: dict, tag: str) -> pd.Series:
     return pd.Series(out, name=tag, dtype=float).sort_index()
 
 
-def reconcile(facts: dict, tag: str, tol: float = 1e6) -> int:
+def reconcile(facts: dict, tag: str, tol: float = 1e6, since=None) -> int:
     """Check that derived quarters sum to every annual (10-K) figure with four
-    derived quarters inside it. Raises on any mismatch; returns years checked."""
+    derived quarters inside it. Raises on any mismatch; returns years checked.
+    `since` limits the check to fiscal years starting on or after that date."""
     q = quarterly(facts, tag)
     df = _frame(facts, tag)
     if df is None or "start" not in df or q.empty:
@@ -90,6 +91,8 @@ def reconcile(facts: dict, tag: str, tol: float = 1e6) -> int:
     ann = df[(df.end - df.start).dt.days.between(350, 380)].sort_values("filed").groupby("end").first()
     n = 0
     for e, r in ann.iterrows():
+        if since is not None and r.start < pd.Timestamp(since):
+            continue
         qs = q[(q.index > r.start) & (q.index <= e)]
         if len(qs) == 4:
             n += 1
