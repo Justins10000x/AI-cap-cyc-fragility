@@ -80,3 +80,23 @@ def test_calendar_quarter_maps_oracle_fiscal_ends():
     import hyperscalers as hs
     q = hs.calendar_quarter(pd.to_datetime(["2026-08-31", "2026-09-30", "2026-05-31"]))
     assert [str(x) for x in q] == ["2026Q3", "2026Q3", "2026Q2"]
+
+
+def test_runway_pools_dividend_tags_across_a_mid_year_switch(tmp_path, monkeypatch):
+    import runway, hyperscalers as hs
+    s, B = "2026-01-01", 1e9
+    ytd = lambda vals: [F(e, v * B, "2026-12-01", s) for e, v in zip(["2026-03-31", "2026-06-30", "2026-09-30"], vals)]
+    us = _facts({"PaymentsToAcquirePropertyPlantAndEquipment": ytd([10, 20, 30]),
+                 "NetCashProvidedByUsedInOperatingActivities": ytd([8, 16, 24]),
+                 "PaymentsForRepurchaseOfCommonStock": ytd([1, 2, 3]),
+                 "PaymentsOfDividends": ytd([2])[:1],                       # old tag: Q1 only
+                 "PaymentsOfOrdinaryDividends": ytd([0, 4, 6])[1:],         # new tag: 6M and 9M YTD
+                 "CashAndCashEquivalentsAtCarryingValue": [F("2026-09-30", 30 * B, "2026-12-01")],
+                 "MarketableSecuritiesCurrent": [F("2026-09-30", 20 * B, "2026-12-01")]})
+    (tmp_path / "googl_companyfacts.json").write_text(json.dumps({"facts": {"us-gaap": us}}))
+    monkeypatch.setattr(runway, "DATA", str(tmp_path))
+    p = runway.company("googl", start="2026-01-01")
+    assert list(p.dividends / B) == [2, 2, 2]
+    assert p.payouts_complete.all()
+    assert list(p.gap / B) == [5, 5, 5]                    # 10 capex + 1 buyback + 2 dividend - 8 cash flow
+    assert p.liquid.iloc[-1] == 50 * B

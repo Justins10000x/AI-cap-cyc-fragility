@@ -17,6 +17,10 @@ to that, including when it means retracting its own earlier results.
 - **Four of five are above 100%** (Amazon 182%, Oracle 123%, Alphabet 121%, Meta 104%);
   Microsoft, at 68%, is the exception. Their combined long-term debt rose from about $231B to
   $540B in a year.
+- **Cash is not the immediate constraint**: the five hold about $563B of liquid funds against
+  a combined gap of about $30B a quarter, having borrowed ahead. Alphabet and Meta report zero
+  buybacks in 2026. Amazon is tightest, at about five quarters. See
+  [`results/RESULTS_runway_v1.md`](results/RESULTS_runway_v1.md).
 - Demand for Nvidia's chips now leans on credit at every level of the loop. Limits in
   [`results/RESULTS_hyperscalers_v1.md`](results/RESULTS_hyperscalers_v1.md).
 
@@ -78,7 +82,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 22 tests, ~1 min: every simulation claim above
+pytest -q                                  # 23 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -112,6 +116,7 @@ src/
   make_figure_circular.py
   hyperscalers.py          hyperscaler capex vs operating cash flow and debt
   make_figure_hyperscalers.py
+  runway.py                how long each hyperscaler can fund its gap from cash on hand
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
 tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)
 results/                   RESULTS_v3.md, tables, figure
