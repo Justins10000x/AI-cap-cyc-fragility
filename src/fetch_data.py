@@ -12,6 +12,7 @@ Writes (overwriting older copies):
     data/nvda_revenue*.json                 Nvidia revenue, SEC XBRL API (two tags)
     data/{nvda,crwv}_companyfacts.json      all XBRL facts filed by Nvidia / CoreWeave
     data/{msft,googl,amzn,meta,orcl}_companyfacts.json   the same for the hyperscalers
+    data/filings/*.htm                      latest 10-Q and 10-K text, Nvidia and CoreWeave
     data/fedfunds.csv, data/hy_spread.csv   Fed funds rate and high-yield credit
                                             spread, from FRED
 
@@ -113,6 +114,49 @@ def fetch_sec(outdir: str, contact: str | None) -> bool:
     return ok
 
 
+# Full filing text (the written notes say who the stakes and guarantees are in,
+# and how concentrated customers are -- none of which is in the company-facts data).
+FILING_CIKS = {"nvda": "0001045810", "crwv": "0001769628"}
+
+
+def pick_filings(submissions: dict, forms=("10-Q", "10-K")) -> list:
+    """Latest filing of each form from an SEC submissions JSON:
+    [(form, filing_date, accession_number, primary_document)]."""
+    r = submissions["filings"]["recent"]
+    out, seen = [], set()
+    for form, date, acc, doc in zip(r["form"], r["filingDate"], r["accessionNumber"],
+                                    r["primaryDocument"]):
+        if form in forms and form not in seen and doc:
+            seen.add(form)
+            out.append((form, date, acc, doc))
+    return out
+
+
+def fetch_filings(outdir: str, contact: str | None) -> bool:
+    if not contact:
+        print("  skipped: needs --sec-contact")
+        return False
+    ok = True
+    fdir = os.path.join(outdir, "filings")
+    os.makedirs(fdir, exist_ok=True)
+    hdr = {"User-Agent": contact, "Accept-Encoding": "identity"}
+    for co, cik in FILING_CIKS.items():
+        try:
+            sub = json.loads(_get(f"https://data.sec.gov/submissions/CIK{cik}.json", hdr))
+            for form, date, acc, doc in pick_filings(sub):
+                url = (f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/"
+                       f"{acc.replace('-', '')}/{doc}")
+                raw = _get(url, hdr)
+                path = os.path.join(fdir, f"{co}_{form}_{date}.htm")
+                with open(path, "wb") as f:
+                    f.write(raw)
+                print(f"  {co.upper():5} {form:5} filed {date}  {len(raw)/1e6:5.1f} MB -> {path}")
+        except Exception as e:
+            ok = False
+            print(f"  {co.upper():5} FAILED: {e}")
+    return ok
+
+
 def fetch_fred(outdir: str) -> bool:
     ok = True
     for fname, sid in FRED.items():
@@ -142,6 +186,8 @@ def main() -> int:
     p = fetch_prices(a.outdir)
     print("Fundamentals (SEC EDGAR):")
     s = fetch_sec(a.outdir, a.sec_contact)
+    print("Filing text (SEC EDGAR, latest 10-Q and 10-K):")
+    fetch_filings(a.outdir, a.sec_contact)
     print("Macro (FRED):")
     m = fetch_fred(a.outdir)
 
