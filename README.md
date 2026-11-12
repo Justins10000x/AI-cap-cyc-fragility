@@ -8,7 +8,17 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: the hyperscalers (11 Nov 2026)
+## Latest: what the filing notes say (13 Nov 2026)
+
+- **Correction to the 9 Nov result:** $105B of Nvidia's $108.5B guarantees is for an OpenAI
+  affiliate, was signed in August 2026, and takes effect only from fiscal 2029. On money
+  actually deployed, Nvidia's ecosystem exposure is about 33% of a year's revenue ($99B), not 66%.
+- **Nvidia put $31B of new money into private companies in six months**, has committed $25B
+  more, and has begun committing to buy cloud capacity from AI clouds that buy its products ($36B).
+- Direct customer concentration has not risen. Details and limits in
+  [`results/RESULTS_filing_notes_v1.md`](results/RESULTS_filing_notes_v1.md).
+
+## The hyperscalers (11 Nov 2026)
 
 ![hyperscalers](results/hyperscalers_v1.png)
 
@@ -28,6 +38,7 @@ to that, including when it means retracting its own earlier results.
 
 ![circular-funding v1](results/circular_v1.png)
 
+- *(Corrected 13 Nov: the 66% includes a $105B guarantee not yet in force; see above.)*
 - **Nvidia's money in the AI ecosystem rose from ~2% of a year's revenue to 66% in twelve
   months**: $47.9B of private stakes, $42.8B of listed stakes and $108.5B of guarantees
   (maximum exposure) at July 2026, against $303B of trailing revenue.
@@ -82,7 +93,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 23 tests, ~1 min: every simulation claim above
+pytest -q                                  # 26 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -116,6 +127,7 @@ src/
   make_figure_circular.py
   hyperscalers.py          hyperscaler capex vs operating cash flow and debt
   make_figure_hyperscalers.py
+  filing_notes.py          figures from the written notes of the 10-Qs (fails if wording changes)
   runway.py                how long each hyperscaler can fund its gap from cash on hand
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
 tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)

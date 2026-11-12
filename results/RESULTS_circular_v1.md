@@ -1,5 +1,11 @@
 # Circular-funding ratio v1 — 9 November 2026
 
+> **Corrections, 13 Nov 2026** (from the filing notes; see `RESULTS_filing_notes_v1.md`):
+> (1) $105B of the $108.5B guarantees was signed in August 2026, after the quarter, and
+> does not take effect until leases start from fiscal 2029; only $3.5B was live at July 2026.
+> On deployed money the exposure is about 33% of trailing revenue, not 66%.
+> (2) New money into private stakes in the July 2026 quarter was $13.1B, not $0.7B.
+
 **Question.** The v3.1 result found no bubble in Nvidia's price *relative to its revenue*.
 That moves the question to the revenue itself: how much of the AI capital loop is Nvidia's
 own money coming back?

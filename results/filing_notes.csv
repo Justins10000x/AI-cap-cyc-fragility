@@ -1,0 +1,18 @@
+figure,value,unit,what,source_file
+openai_guarantee_cap_bn,105.0,USD bn,"SB Energy guarantees on behalf of an OpenAI affiliate (signed Aug 2026, effective from lease start)",nvda_10-Q_2026-08-26.htm
+ai_cloud_guarantees_bn,3.5,USD bn,land/power/shell guarantees for AI cloud partners,nvda_10-Q_2026-08-26.htm
+private_net_additions_q_mn,13106.0,USD mn,"new money into private stakes, latest quarter",nvda_10-Q_2026-08-26.htm
+private_net_additions_ytd_mn,31005.0,USD mn,"same, fiscal year to date",nvda_10-Q_2026-08-26.htm
+private_reclassified_q_mn,12323.0,USD mn,"private stakes moved to listed after going public, latest quarter",nvda_10-Q_2026-08-26.htm
+equity_investments_total_bn,99.0,USD bn,all equity investments held,nvda_10-Q_2026-08-26.htm
+equity_commitments_bn,25.0,USD bn,further equity investments committed,nvda_10-Q_2026-08-26.htm
+ai_cloud_agreements_bn,36.0,USD bn,Nvidia commits to buy cloud capacity from AI clouds that buy its products,nvda_10-Q_2026-08-26.htm
+cloud_service_agreements_bn,29.0,USD bn,cloud capacity for Nvidia's own R&D,nvda_10-Q_2026-08-26.htm
+third_party_dc_leases_bn,20.0,USD bn,data-center leases signed to hand on to third parties,nvda_10-Q_2026-08-26.htm
+top_direct_customer_q_pct,16.0,%,"largest direct customer, latest quarter",nvda_10-Q_2026-08-26.htm
+top3_direct_customers_h1_pct,"16%, 15%, and 13%",% each,"three largest direct customers, first half",nvda_10-Q_2026-08-26.htm
+financing_platforms_mou_bn,500.0,USD bn,"memorandums of understanding, not definitive agreements",nvda_10-Q_2026-08-26.htm
+crwv_customer_a_q_pct,36.0,%,"CoreWeave's largest customer, share of revenue, latest quarter",crwv_10-Q_2026-08-12.htm
+crwv_customer_a_q_year_ago_pct,71.0,%,"same, a year earlier",crwv_10-Q_2026-08-12.htm
+crwv_customer_b_q_pct,26.0,%,second largest,crwv_10-Q_2026-08-12.htm
+crwv_nvidia_placement_bn,2.0,USD bn,"shares CoreWeave sold to Nvidia, Jan 2026",crwv_10-Q_2026-08-12.htm
