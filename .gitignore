@@ -25,3 +25,6 @@ data/
 # intermediate pipeline state
 results/*.pkl
 __pycache__/
+
+# reported (non-filed) source figures are part of the record
+!reported/*.csv

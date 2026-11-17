@@ -8,7 +8,18 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: what the filing notes say (13 Nov 2026)
+## Latest: the demand end, OpenAI (17 Nov 2026)
+
+![OpenAI funding gap](results/labs_openai_v1.png)
+
+- **On OpenAI's own reported plan, compute alone ($856B, 2026–30) costs more than all its
+  expected revenue ($840B)**, and $156B must be raised on top of the $122B raised in March.
+- **If revenue grows 50% a year instead of ~83%, OpenAI must raise about $520B more, or cut
+  compute and its suppliers sell about $186B less** (some mix in practice).
+- Built on reported, not filed, figures (FT, Sept 2026), kept in `reported/`. Details in
+  [`results/RESULTS_labs_openai_v1.md`](results/RESULTS_labs_openai_v1.md).
+
+## What the filing notes say (13 Nov 2026)
 
 - **Correction to the 9 Nov result:** $105B of Nvidia's $108.5B guarantees is for an OpenAI
   affiliate, was signed in August 2026, and takes effect only from fiscal 2029. On money
@@ -93,7 +104,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 26 tests, ~1 min: every simulation claim above
+pytest -q                                  # 34 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -127,6 +138,8 @@ src/
   make_figure_circular.py
   hyperscalers.py          hyperscaler capex vs operating cash flow and debt
   make_figure_hyperscalers.py
+  labs.py                  demand end: lab funding-gap scenarios on reported figures
+  make_figure_labs.py
   filing_notes.py          figures from the written notes of the 10-Qs (fails if wording changes)
   runway.py                how long each hyperscaler can fund its gap from cash on hand
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance

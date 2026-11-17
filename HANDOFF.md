@@ -30,10 +30,17 @@ Nothing here is investment advice.
    exposure is ~33% of revenue. Nvidia now commits to buy capacity from AI clouds that buy
    its products ($36B).
 
+7. **The demand end** (`RESULTS_labs_openai_v1.md`): on OpenAI's reported plan, compute
+   exceeds all revenue and $156B more must be raised even on plan; slower growth means
+   hundreds of billions more, or lost revenue for its suppliers. Reported data lives in
+   `reported/` with sources, never mixed with filed data.
+8. Predictions for Nvidia's Q3 FY2027 10-Q are pre-registered in
+   `PREDICTIONS_nvda_q3fy27.md`; score them in a separate file, never edit the original.
+
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (26 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (34 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.
@@ -57,7 +64,9 @@ After a commit made through the linked shell, stale `.git/*.lock` files must be 
 1. **Nvidia's October-quarter 10-Q** (results 17 Nov 2026): re-run the fetch, then
    `circular_funding.py` and `filing_notes.py` (its patterns will need updating for the new
    quarter's wording; it fails loudly rather than reuse old values).
-2. Filing notes for the hyperscalers (lease commitments).
+2. The demand-end model for Anthropic (disclose the conflict: the assistant is made by
+   Anthropic) and xAI; then how much of Oracle's and CoreWeave's backlog depends on OpenAI.
+3. Filing notes for the hyperscalers (lease commitments).
 3. Replicate Phillips-Shi-Yu (2015) on Shiller's S&P 500 data as external validation.
 4. Lease commitments for the hyperscalers (not in company facts; needs filing text).
 

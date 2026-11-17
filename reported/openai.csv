@@ -1,0 +1,14 @@
+item,period,value_usd_bn,kind,source,source_date,grade
+revenue,2026,36,projection,"Financial Times, from an OpenAI presentation (via Reuters)",2026-09-18,reported_primary
+revenue,2030,350,projection,"Financial Times, from an OpenAI presentation (via Reuters)",2026-09-18,reported_primary
+revenue_cumulative,2026-2030,840,projection,"Financial Times, from an OpenAI presentation (via Reuters)",2026-09-18,reported_primary
+compute_and_infrastructure,2026-2030,856,projection,"Financial Times, from an OpenAI presentation (via Reuters)",2026-09-18,reported_primary
+other_costs,2026-2030,262,projection,"Financial Times via Tom's Hardware / Yahoo Finance",2026-09-21,reported_secondary
+free_cash_flow_cumulative,2026-2030,-278,projection,"Financial Times, from an OpenAI presentation (via Reuters)",2026-09-18,reported_primary
+free_cash_flow_cumulative_may_plan,2026-2030,-305,projection,"TheNextWeb, earlier OpenAI projection",2026-09,reported_secondary
+funding_raised,2026-03,122,actual,"OpenAI announcement (March 2026 round, $852B post-money)",2026-03-31,company_statement
+revenue,2025,13.07,actual,"Leaked 2025 accounts, via Fortune (relayed by safeguard.sh)",2026-06,reported_secondary
+revenue,2026Q1,5.7,actual,"Wall Street Journal (relayed by safeguard.sh)",2026-08,reported_secondary
+revenue,2026Q2,6.7,actual,"Wall Street Journal (relayed by safeguard.sh)",2026-08,reported_secondary
+operating_loss,2026Q1,-9.3,actual,"Wall Street Journal, incl. stock-based pay (relayed by safeguard.sh)",2026-08,reported_secondary
+operating_loss,2026Q2,-12.3,actual,"Wall Street Journal, incl. stock-based pay (relayed by safeguard.sh)",2026-08,reported_secondary
