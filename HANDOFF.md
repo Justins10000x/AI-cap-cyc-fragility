@@ -37,10 +37,16 @@ Nothing here is investment advice.
 8. Predictions for Nvidia's Q3 FY2027 10-Q are pre-registered in
    `PREDICTIONS_nvda_q3fy27.md`; score them in a separate file, never edit the original.
 
+9. **Rate stress** (`RESULTS_rate_stress_v1.md`): rates are a stress setting, not the thesis;
+   they bite only where earnings don't cover interest (CoreWeave, then Oracle).
+10. Nvidia's Q3 FY27 10-Q was delayed after Jensen Huang's resignation (12 Nov); score the
+   predictions once it is filed (legal deadline ~4 Dec). Watch days-sales-outstanding: 45 → 60
+   → 64 days over the last three quarters.
+
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (34 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (36 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.

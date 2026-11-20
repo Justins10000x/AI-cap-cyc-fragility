@@ -8,7 +8,14 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: the demand end, OpenAI (17 Nov 2026)
+## Latest: rate stress (20 Nov 2026)
+
+- **Rates are an accelerant, not a cause.** For Microsoft, Alphabet, Amazon and Meta, even
+  +100bp on all their debt would cost under 2% of operating profit. Oracle covers interest
+  only ~4 times. **CoreWeave's operating income doesn't cover its interest at all**; higher
+  rates deepen that hole. See [`results/RESULTS_rate_stress_v1.md`](results/RESULTS_rate_stress_v1.md).
+
+## The demand end, OpenAI (17 Nov 2026)
 
 ![OpenAI funding gap](results/labs_openai_v1.png)
 
@@ -104,7 +111,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 34 tests, ~1 min: every simulation claim above
+pytest -q                                  # 36 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -138,6 +145,7 @@ src/
   make_figure_circular.py
   hyperscalers.py          hyperscaler capex vs operating cash flow and debt
   make_figure_hyperscalers.py
+  rate_stress.py           interest coverage and rate shocks, as a feature on the thesis
   labs.py                  demand end: lab funding-gap scenarios on reported figures
   make_figure_labs.py
   filing_notes.py          figures from the written notes of the 10-Qs (fails if wording changes)
