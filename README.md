@@ -8,7 +8,22 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: the watch list (21 Nov 2026)
+## Latest: are the earnings real? Depreciation (21 Nov 2026)
+
+![depreciation v1](results/depreciation_v1.png)
+
+- **The earnings are not propped up by accounting.** If servers lasted 4 years instead of the
+  stated 5.5-6, Microsoft, Alphabet, Amazon and Meta would lose 3-8% of operating income.
+- **The exposure is at the leveraged end.** At 4 years, Oracle would lose about a fifth of its
+  operating income, and CoreWeave would go from -$0.2B to about -$2.8B a year.
+- **The real pressure is timing.** Over the last year the five hyperscalers' depreciation rose
+  $49B (+47%) while operating income rose $91B (+21%). If capex merely stays at the latest
+  quarter's level, depreciation rises another $82B next year, almost all of last year's profit
+  growth. Revenue has to keep growing as fast just for profit to stand still. That is the
+  mechanism behind "earnings run out of steam". See
+  [`results/RESULTS_depreciation_v1.md`](results/RESULTS_depreciation_v1.md).
+
+## The watch list (21 Nov 2026)
 
 Twelve warning lights with thresholds written down in advance ([`WATCHLIST.md`](WATCHLIST.md)):
 capex guidance, TSMC revenue, GPU rental prices, memory prices, cloud backlog, credit, Nvidia's
@@ -120,7 +135,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 42 tests, ~1 min: every simulation claim above
+pytest -q                                  # 48 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -129,6 +144,8 @@ python src/nvda_valuation.py               # v3.1 price-to-revenue test
 python src/make_figure_v31.py              # -> results/v31_nov2026.png
 python src/circular_funding.py             # circular-funding ratio v1 -> results/circular_*.csv
 python src/make_figure_circular.py         # -> results/circular_v1.png
+python src/depreciation.py                 # depreciation v1 -> results/depreciation_*.csv
+python src/make_figure_depreciation.py     # -> results/depreciation_v1.png
 python src/run_v3.py                       # tests, FDR, episodes  -> results/*.csv   (~3 min)
 python src/size_study.py 400               # false-positive study  -> results/size_study.csv
 python src/boom_vs_bubble.py 300           # boom vs bubble        -> results/boom_vs_bubble.csv
@@ -160,6 +177,8 @@ src/
   make_figure_labs.py
   filing_notes.py          figures from the written notes of the 10-Qs (fails if wording changes)
   runway.py                how long each hyperscaler can fund its gap from cash on hand
+  depreciation.py          locked-in depreciation and server-life sensitivity (vintage model)
+  make_figure_depreciation.py
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
 tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)
 results/                   RESULTS_v3.md, tables, figure

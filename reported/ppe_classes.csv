@@ -1,0 +1,7 @@
+company,date,item,value,unit,source,grade
+Oracle,2026-05-31,servers_network_gross,59634,USD m,"FY2026 10-K Note 4 (computer, network, machinery and equipment)",filed_10k
+Oracle,2026-05-31,construction_in_progress,39973,USD m,FY2026 10-K Note 4,filed_10k
+Oracle,2026-05-31,ppe_gross_total,122651,USD m,FY2026 10-K Note 4,filed_10k
+Oracle,2025-05-31,servers_network_gross,30345,USD m,FY2026 10-K Note 4,filed_10k
+Oracle,2025-05-31,construction_in_progress,16510,USD m,FY2026 10-K Note 4,filed_10k
+Oracle,2025-05-31,ppe_gross_total,59554,USD m,FY2026 10-K Note 4,filed_10k

@@ -1,4 +1,4 @@
-# Handoff: where this project stands (11 Nov 2026)
+# Handoff: where this project stands (21 Nov 2026)
 
 Read this first if you are picking the project up in a new session.
 
@@ -49,10 +49,17 @@ Nothing here is investment advice.
    Next readings: Nvidia 10-Q (~4 Dec), TSMC November revenue (~10 Dec), Oracle (mid-Dec),
    Microsoft/Meta/Alphabet/Amazon (late Jan to early Feb).
 
+12. **Depreciation** (`RESULTS_depreciation_v1.md`, `src/depreciation.py`): stated server
+   lives are not what props up hyperscaler profit (a 4-year life costs 3-8% of operating
+   income), but Oracle (~a fifth) and CoreWeave (loss deepens to ~-$2.8B) are exposed. The
+   pressure is timing: at flat capex, depreciation rises ~$82B next year, about all of last
+   year's $91B profit growth. Re-run after each round of filings; the "capex flat" projection
+   is the model's first out-of-sample test. Stated lives are in `reported/useful_lives.csv`.
+
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (42 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (48 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.
