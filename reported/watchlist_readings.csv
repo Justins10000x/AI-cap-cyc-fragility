@@ -1,0 +1,10 @@
+indicator,date,value,unit,source,grade
+tsmc_revenue_yoy_pct,2026-10,59.7,%,"TSMC October revenue release, SEC 6-K (2026-11-10)",filed_6k
+gpu_h100_usd_hr,2026-10,3.30,USD per GPU-hour,"gpurentalprices.com on-demand typical rate",reported_secondary
+gpu_h100_usd_hr,2026-11,3.52,USD per GPU-hour,"gpurentalprices.com, month to date to 20 Nov",reported_secondary
+gpu_b200_usd_hr,2026-10,7.73,USD per GPU-hour,"gpurentalprices.com on-demand typical rate",reported_secondary
+gpu_b200_usd_hr,2026-11,8.38,USD per GPU-hour,"gpurentalprices.com, month to date to 20 Nov",reported_secondary
+dram_next_quarter_price_change_low_pct,2026-11-18,5,%,"TrendForce forecast for Q1 2027 DRAM contract prices (+5 to +10%), via EconoTimes",reported_secondary
+crwv_cds_5y_bp,2026-11-05,1267.9,bp,"S&P Global Market Intelligence via Reuters (AOL)",reported_secondary
+nvda_dso_days,2026-10-25,63.7,days,"Nvidia Q3 FY27 release, SEC 8-K: receivables 81,033m / revenue 115.8bn x 91",filed_8k
+openai_round_valuation_usd_bn,2026-03-31,852,USD bn,"OpenAI March 2026 round, post-money",company_statement

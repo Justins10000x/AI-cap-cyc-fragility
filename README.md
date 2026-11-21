@@ -8,7 +8,16 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: rate stress (20 Nov 2026)
+## Latest: the watch list (21 Nov 2026)
+
+Twelve warning lights with thresholds written down in advance ([`WATCHLIST.md`](WATCHLIST.md)):
+capex guidance, TSMC revenue, GPU rental prices, memory prices, cloud backlog, credit, Nvidia's
+collection time, OpenAI funding, CoreWeave's interest burden. **At registration: 0 tripped,
+10 clear, 2 waiting for data.** Closest to tripping: Microsoft's flat backlog and small capex
+trim, CoreWeave's credit (85% of threshold), Nvidia's lengthening collection time.
+Run `python src/watchlist.py` after each data update.
+
+## Rate stress (20 Nov 2026)
 
 - **Rates are an accelerant, not a cause.** For Microsoft, Alphabet, Amazon and Meta, even
   +100bp on all their debt would cost under 2% of operating profit. Oracle covers interest
@@ -111,7 +120,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 36 tests, ~1 min: every simulation claim above
+pytest -q                                  # 42 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -145,6 +154,7 @@ src/
   make_figure_circular.py
   hyperscalers.py          hyperscaler capex vs operating cash flow and debt
   make_figure_hyperscalers.py
+  watchlist.py             pre-registered warning lights, evaluated against latest readings
   rate_stress.py           interest coverage and rate shocks, as a feature on the thesis
   labs.py                  demand end: lab funding-gap scenarios on reported figures
   make_figure_labs.py

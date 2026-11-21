@@ -1,0 +1,13 @@
+code,signal,latest,threshold,status,note
+T1a,capex guided down year on year,no next-year figures yet,any company,clear,first 2027 figures due on Jan/Feb calls
+T1b,standing capex guidance cut,worst change -2.9%,-10%,clear,Microsoft -2.9%
+T1c,two or more companies cut in the same round,1 in a round,2,clear,
+T2,TSMC monthly revenue growth,+59.7% (2026-10),< +20% for 2 months,clear,
+T3,GPU rental prices,"H100 $3.52, B200 $8.38 (2026-11)",-15% vs 3 months earlier,waiting for data,needs 4 monthly readings; Oct to Nov rose 7-8%
+T4,memory (DRAM) contract prices,next quarter +5% or more (2026-11-18),a forecast or actual decline,clear,increases narrowing through 2027 (TrendForce)
+C1,early warning: GPU rents AND memory prices falling,,T3 and T4 together,waiting for data,
+T5,cloud backlog (remaining performance obligations),"MSFT -0.1%, GOOGL +9.3%, ORCL +4.1%, CRWV +5.0%",-3% in a quarter or 2 declines,clear,
+T6,neocloud and broad credit,CoreWeave CDS 1268bp; HY spread 3.32%,> 1500bp or > 5.0%,clear,
+T7,Nvidia days to collect,64 days (2026-10-25),> 75,clear,
+T8,OpenAI funding,last round $852B (2026-03-31),"down-round, failed raise, or 2026 revenue < $30B",clear,2026 revenue not yet reported
+T9,CoreWeave interest / revenue,22% (2026-06-30),> 30%,clear,

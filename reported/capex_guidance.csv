@@ -1,0 +1,10 @@
+company,period,low_usd_bn,high_usd_bn,basis,given_on,change_vs_prior,source,grade
+Amazon,CY2026,200,200,cash capex (approx.),2026-07-30,raised,"valueaddvc.com capex tracker (secondary)",reported_secondary
+Amazon,CY2026,220,220,cash capex (approx.),2026-10-29,"reaffirmed (raised from 200 on 2026-07-30)","valueaddvc.com capex tracker (secondary)",reported_secondary
+Alphabet,CY2026,180,190,capex,2026-04-23,prior range,"valueaddvc.com capex tracker (secondary)",reported_secondary
+Alphabet,CY2026,195,205,capex,2026-10-28,"held (raised from 180-190 on 2026-07-22)","valueaddvc.com capex tracker (secondary)",reported_secondary
+Meta,CY2026,130,145,incl. principal payments on finance leases,2026-07-29,prior range,"valueaddvc.com capex tracker (secondary)",reported_secondary
+Meta,CY2026,135,145,incl. principal payments on finance leases,2026-10-21,narrowed (low end raised),"Meta Q3 2026 release, SEC 8-K exhibit 99.1",filed_8k
+Microsoft,CY2026,175,175,incl. finance leases (calendar year),2026-07-29,prior figure (origin unsourced on tracker page),"valueaddvc.com capex tracker (secondary)",reported_secondary
+Microsoft,CY2026,170,170,incl. finance leases (calendar year),2026-10-28,"trimmed, attributed to third-party capacity delays","valueaddvc.com capex tracker (secondary)",reported_secondary
+Oracle,FY2027,90,95,capex (net cash capex no more than 70),2026-09-10,reiterated,"Oracle Q1 FY27 call, Zacks via Yahoo Finance",reported_secondary

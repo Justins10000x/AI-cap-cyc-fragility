@@ -43,10 +43,16 @@ Nothing here is investment advice.
    predictions once it is filed (legal deadline ~4 Dec). Watch days-sales-outstanding: 45 → 60
    → 64 days over the last three quarters.
 
+11. **Watch list** (`WATCHLIST.md`, `src/watchlist.py`): 12 pre-registered warning lights.
+   Update `reported/watchlist_readings.csv` and `reported/capex_guidance.csv` as readings arrive
+   (each with source and grade), then run the script. Never edit thresholds; add a dated version.
+   Next readings: Nvidia 10-Q (~4 Dec), TSMC November revenue (~10 Dec), Oracle (mid-Dec),
+   Microsoft/Meta/Alphabet/Amazon (late Jan to early Feb).
+
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (36 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (42 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.
