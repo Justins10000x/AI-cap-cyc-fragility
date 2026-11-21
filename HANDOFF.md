@@ -48,6 +48,9 @@ Nothing here is investment advice.
    (each with source and grade), then run the script. Never edit thresholds; add a dated version.
    Next readings: Nvidia 10-Q (~4 Dec), TSMC November revenue (~10 Dec), Oracle (mid-Dec),
    Microsoft/Meta/Alphabet/Amazon (late Jan to early Feb).
+   **v1.1 (21 Nov 2026)** added E1a/E1b, the earnings squeeze (operating income down y/y while
+   depreciation rises), computed from SEC data. Stated probabilities for the Oct-Dec 2026
+   quarter (E1a 10%, E1b 15%) are in WATCHLIST.md; score them in a separate file in February.
 
 12. **Depreciation** (`RESULTS_depreciation_v1.md`, `src/depreciation.py`): stated server
    lives are not what props up hyperscaler profit (a 4-year life costs 3-8% of operating
@@ -59,7 +62,7 @@ Nothing here is investment advice.
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (48 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (51 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.

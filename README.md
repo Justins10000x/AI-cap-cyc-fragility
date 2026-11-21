@@ -32,6 +32,11 @@ collection time, OpenAI funding, CoreWeave's interest burden. **At registration:
 trim, CoreWeave's credit (85% of threshold), Nvidia's lengthening collection time.
 Run `python src/watchlist.py` after each data update.
 
+**v1.1 (added 21 Nov, before any Oct-Dec quarter filing):** E1a trips if the five hyperscalers'
+combined operating income falls year on year while their depreciation keeps rising; E1b if two
+or more do so individually. Baseline: combined operating income +20.5%, depreciation +49.9%
+(Jul-Sep 2026); one company (Meta) already squeezed. The Oct-Dec quarter trips E1a below $128.7B.
+
 ## Rate stress (20 Nov 2026)
 
 - **Rates are an accelerant, not a cause.** For Microsoft, Alphabet, Amazon and Meta, even
@@ -135,7 +140,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 48 tests, ~1 min: every simulation claim above
+pytest -q                                  # 51 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"

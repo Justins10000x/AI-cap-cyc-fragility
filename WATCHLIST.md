@@ -44,6 +44,43 @@ Lights closest to their thresholds, and worth watching:
 Leading in the healthy direction: TSMC revenue up 60% a year, GPU rental prices rising, Alphabet's
 and Oracle's backlogs still growing.
 
+## v1.1: earnings running out of steam (added 21 November 2026)
+
+Added after the depreciation result ([`results/RESULTS_depreciation_v1.md`](results/RESULTS_depreciation_v1.md)),
+before any company has filed for the October–December 2026 quarter. The v1 lights above are
+unchanged. Computed from SEC filings by `src/watchlist.py` (no reported data needed).
+
+| code | signal | trips when | baseline (Jul–Sep 2026 quarter) | next reading |
+|---|---|---|---|---|
+| E1a | **Earnings squeeze, all five**: Microsoft, Alphabet, Amazon, Meta, Oracle | their combined operating income is below the same calendar quarter a year earlier while their combined depreciation is above it (quarters in which all five have reported) | operating income $134.3B, +20.5%; depreciation +49.9% | Oct–Dec quarter complete early Feb; trips if combined operating income < $128.7B |
+| E1b | **Breadth**: the same squeeze company by company | two or more of the five in the same calendar quarter | one: Meta (operating income $13.0B vs $20.5B; depreciation $6.81B vs $4.76B) | Oracle mid-Dec, the rest late Jan to early Feb |
+
+**Why these.** The thesis is that the build-out breaks when earnings and credit run out of steam.
+Depreciation from capex already spent rises on a fixed schedule (about $82B over the next four
+quarters at flat capex), so profit falling while depreciation rises is that mechanism showing up
+in the reported numbers.
+
+**Rules.**
+- Operating income is GAAP as filed, with no adjustment for one-off charges, so there is no room
+  for judgement after the fact.
+- Oracle's fiscal quarter ending 30 November counts as calendar Q4.
+- E1a uses only quarters for which all five have filed.
+
+**Already worth noting.** Combined operating income has been almost flat for three quarters
+($130.3B, $133.7B, $134.3B) while quarterly depreciation rose from $36.1B to $44.6B. For the
+Oct–Dec quarter, E1a trips if combined operating income falls more than 4.2% below the July–
+September level.
+
+**Stated probabilities, for scoring (written 21 Nov 2026, before the data).** These are the
+assistant's judgement, not a model output.
+- **E1a trips on the Oct–Dec 2026 quarter: 10%.** The October–December quarter is usually the
+  strongest of the year for advertising and retail, and the other four grew in July–September.
+- **E1b trips on that quarter: 15%.** Meta is likely to stay squeezed against a strong prior-year
+  quarter ($24.7B), but a second company would have to see operating income fall year on year,
+  and none was close in July–September.
+
+## Status with v1.1: 0 tripped, 12 clear, 2 waiting for data
+
 ## Sources for the baselines
 
 - Capex guidance: [Meta Q3 2026 release (SEC 8-K)](https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066700/meta-09302026xexhibit991.htm);
@@ -55,4 +92,4 @@ and Oracle's backlogs still growing.
 - [GPU Rental Price Index, November 2026](https://gpurentalprices.com/gpu-price-index/2026-11)
 - [TrendForce sees DRAM price growth slowing after Q4 2026 (EconoTimes)](https://econotimes.com/TrendForce-Sees-DRAM-Price-Growth-Slowing-After-2026-Fourth-Quarter-1778815)
 - CoreWeave CDS: S&P Global Market Intelligence via [Reuters (AOL)](https://www.aol.com/articles/ai-data-center-stocks-slip-112314000.html)
-- Backlog, high-yield spread, CoreWeave interest: SEC company facts and FRED, refreshed by the script
+- Backlog, high-yield spread, CoreWeave interest, and E1 (operating income, depreciation): SEC company facts and FRED, refreshed by the script

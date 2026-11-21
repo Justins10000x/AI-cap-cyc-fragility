@@ -28,6 +28,15 @@ DSO_CEILING = 75.0            # T7: Nvidia days sales outstanding
 OPENAI_VALUATION = 852.0      # T8: a new OpenAI round below the March 2026 post-money ($bn)
 CRWV_INTEREST_CEILING = 0.30  # T9: CoreWeave interest expense above 30% of quarterly revenue
 
+# ---- v1.1, added 21 November 2026 (after depreciation v1; before any filing for the
+# October-December 2026 quarter). The v1 thresholds above are unchanged.
+V11_ON = "2026-11-21"
+HYPERSCALERS = ("msft", "googl", "amzn", "meta", "orcl")
+E1_BREADTH = 2                # E1b: this many of the five in the squeeze in the same calendar quarter
+# E1a: the five's COMBINED operating income below the same calendar quarter a year earlier,
+#      while their combined depreciation is above it (only quarters in which all five have reported).
+# Operating income is GAAP as filed, no adjustments for one-off charges (no discretion after the fact).
+
 
 def load_csv(path):
     return pd.DataFrame(list(csv.DictReader(open(path))))
@@ -93,7 +102,53 @@ def refresh_filed(r: pd.DataFrame) -> pd.DataFrame:
     return pd.concat([r, pd.DataFrame(add)], ignore_index=True)
 
 
-def evaluate(r: pd.DataFrame, g: pd.DataFrame) -> pd.DataFrame:
+def earnings_panel() -> pd.DataFrame | None:
+    """Quarterly operating income and depreciation for the five, by calendar quarter
+    (Oracle's fiscal quarter ending 30 Nov counts as Q4), from SEC company facts in data/."""
+    import circular_funding as cf
+    from depreciation import DEP_TAG
+    rows = []
+    for co in HYPERSCALERS:
+        p = os.path.join(DATA, f"{co}_companyfacts.json")
+        if not os.path.exists(p):
+            return None
+        f = cf.load_facts(p)
+        x = pd.DataFrame({"op_income": cf.quarterly(f, "OperatingIncomeLoss"),
+                          "depreciation": cf.quarterly(f, DEP_TAG[co])}).dropna()
+        x["quarter"] = pd.PeriodIndex(x.index, freq="Q")
+        x["company"] = co
+        rows.append(x.reset_index(drop=True))
+    return pd.concat(rows, ignore_index=True)
+
+
+def earnings_squeeze(p: pd.DataFrame) -> dict:
+    """E1a on the latest quarter all five have reported; E1b on the latest quarter any has."""
+    n = p.groupby("quarter").company.nunique()
+    out = dict(full_quarter=None, oi_yoy=None, dep_yoy=None, e1a=None, breadth_quarter=None, squeezed=[], e1b=None)
+    tot = p.groupby("quarter")[["op_income", "depreciation"]].sum()
+    full = [q for q in n.index if n[q] == len(HYPERSCALERS) and (q - 4) in n.index and n[q - 4] == len(HYPERSCALERS)]
+    if full:
+        q = max(full)
+        a, b = tot.loc[q], tot.loc[q - 4]
+        out.update(full_quarter=str(q), oi_yoy=a.op_income / b.op_income - 1,
+                   dep_yoy=a.depreciation / b.depreciation - 1)
+        out["e1a"] = bool(a.op_income < b.op_income and a.depreciation > b.depreciation)
+        nxt = q + 1                      # the bar the next quarter has to clear: its year-ago combined figure
+        out["next_quarter"], out["next_bar"] = str(nxt), (tot.loc[nxt - 4].op_income if n.get(nxt - 4) == len(HYPERSCALERS) else None)
+        out["latest_combined"] = a.op_income
+    w = p.set_index(["quarter", "company"])
+    q = p.quarter.max()
+    sq = []
+    for co in p[p.quarter == q].company:
+        if (q - 4, co) in w.index:
+            now, then = w.loc[(q, co)], w.loc[(q - 4, co)]
+            if now.op_income < then.op_income and now.depreciation > then.depreciation:
+                sq.append(co)
+    out.update(breadth_quarter=str(q), squeezed=sq, e1b=len(sq) >= E1_BREADTH, reported=int(n[q]))
+    return out
+
+
+def evaluate(r: pd.DataFrame, g: pd.DataFrame, earn: pd.DataFrame | None = None) -> pd.DataFrame:
     out = []
     def row(code, name, reading, threshold, tripped, note=""):
         # bool() matters: numpy's True is not Python's True, so "is True" would hide real trips
@@ -153,6 +208,24 @@ def evaluate(r: pd.DataFrame, g: pd.DataFrame) -> pd.DataFrame:
     ci = series(r, "crwv_interest_share")
     row("T9", "CoreWeave interest / revenue", f"{ci.iloc[-1]:.0%} ({ci.index[-1]})" if len(ci) else "n/a", f"> {CRWV_INTEREST_CEILING:.0%}",
         bool(ci.iloc[-1] > CRWV_INTEREST_CEILING) if len(ci) else None)
+
+    # v1.1 (21 Nov 2026): earnings running out of steam
+    e = earnings_squeeze(earn) if earn is not None else None
+    if e is None or e["full_quarter"] is None:
+        row("E1a", "five hyperscalers: operating income down y/y while depreciation rises", "n/a",
+            "combined, same calendar quarter", None, "v1.1; needs SEC data in data/")
+    else:
+        row("E1a", "five hyperscalers: operating income down y/y while depreciation rises",
+            f"op. income {e['oi_yoy']:+.1%}, depreciation {e['dep_yoy']:+.1%} ({e['full_quarter']})",
+            "combined, same calendar quarter", e["e1a"],
+            f"v1.1; {e['next_quarter']} trips if combined op. income < ${e['next_bar']/1e9:.1f}B "
+            f"({e['full_quarter']}: ${e['latest_combined']/1e9:.1f}B)" if e.get("next_bar") else "v1.1")
+    if e is not None:
+        row("E1b", "...the same squeeze at two or more of the five", f"{len(e['squeezed'])} of {e['reported']} reported ({e['breadth_quarter']})",
+            f">= {E1_BREADTH} in a calendar quarter", e["e1b"],
+            "v1.1; " + (", ".join(c.upper() for c in e["squeezed"]) or "none"))
+    else:
+        row("E1b", "...the same squeeze at two or more of the five", "n/a", f">= {E1_BREADTH} in a calendar quarter", None, "v1.1")
     return pd.DataFrame(out)
 
 
@@ -160,10 +233,10 @@ if __name__ == "__main__":
     r = load_csv(os.path.join(ROOT, "reported", "watchlist_readings.csv"))
     r = refresh_filed(r)
     g = load_csv(os.path.join(ROOT, "reported", "capex_guidance.csv"))
-    e = evaluate(r, g)
+    e = evaluate(r, g, earnings_panel())
     os.makedirs(os.path.join(ROOT, "results"), exist_ok=True)
     e.to_csv(os.path.join(ROOT, "results", "watchlist_status.csv"), index=False)
     pd.set_option("display.width", 250); pd.set_option("display.max_colwidth", 70)
-    print(f"thresholds pre-registered {PREREGISTERED_ON}\n")
+    print(f"thresholds pre-registered {PREREGISTERED_ON} (v1); E1a/E1b added {V11_ON} (v1.1)\n")
     print(e.to_string(index=False))
     print(f"\n{(e.status == 'TRIPPED').sum()} tripped, {(e.status == 'clear').sum()} clear, {(e.status == 'waiting for data').sum()} waiting")

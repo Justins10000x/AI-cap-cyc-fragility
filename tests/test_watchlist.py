@@ -62,3 +62,36 @@ def test_numpy_booleans_still_trip():
     e = wl.evaluate(R(rows), G([]))
     assert status(e, "T9") == "TRIPPED"
     assert isinstance(np.float64(0.31) > 0.30, np.bool_)      # the case that broke "is True"
+
+
+# ---- v1.1: E1 earnings squeeze
+def E(vals):
+    """vals: {company: [(quarter, op_income, depreciation), ...]} -> earnings panel."""
+    rows = [dict(quarter=pd.Period(q, freq="Q"), company=c, op_income=o, depreciation=d)
+            for c, xs in vals.items() for q, o, d in xs]
+    return pd.DataFrame(rows)
+
+
+FIVE = ("msft", "googl", "amzn", "meta", "orcl")
+
+
+def test_e1a_trips_only_on_combined_fall_with_rising_depreciation():
+    base = {c: [("2025Q4", 30, 5), ("2026Q4", 31, 7)] for c in FIVE}
+    base["meta"] = [("2025Q4", 25, 5), ("2026Q4", 10, 7)]          # meta squeezed, combined still down
+    e = wl.evaluate(R(BASE), G([]), E(base))
+    assert status(e, "E1a") == "TRIPPED"                             # 145 -> 134, depreciation 25 -> 35
+    assert status(e, "E1b") == "clear"                               # only one company squeezed
+
+
+def test_e1a_uses_only_quarters_all_five_reported_and_e1b_counts_breadth():
+    v = {c: [("2025Q3", 30, 5), ("2026Q3", 33, 7), ("2025Q4", 30, 5)] for c in FIVE}
+    v["meta"] += [("2026Q4", 20, 7)]; v["orcl"] += [("2026Q4", 25, 7)]   # only two have reported Q4
+    s = wl.earnings_squeeze(E(v))
+    assert s["full_quarter"] == "2026Q3" and s["e1a"] is False      # Q4 incomplete: not used for E1a
+    assert s["breadth_quarter"] == "2026Q4" and sorted(s["squeezed"]) == ["meta", "orcl"] and s["e1b"]
+    assert s["reported"] == 2
+
+
+def test_e1_waits_without_data():
+    e = wl.evaluate(R(BASE), G([]))
+    assert status(e, "E1a") == "waiting for data" and status(e, "E1b") == "waiting for data"
