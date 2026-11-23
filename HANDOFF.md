@@ -1,4 +1,4 @@
-# Handoff: where this project stands (21 Nov 2026)
+# Handoff: where this project stands (24 Nov 2026)
 
 Read this first if you are picking the project up in a new session.
 
@@ -59,10 +59,16 @@ Nothing here is investment advice.
    year's $91B profit growth. Re-run after each round of filings; the "capex flat" projection
    is the model's first out-of-sample test. Stated lives are in `reported/useful_lives.csv`.
 
+13. **Returns on capital** (`RESULTS_returns_v1.md`, `src/returns.py`): the five's pre-tax
+   return on physical capital fell from 74% (2021) to 41%; on the last year's new capital at
+   most 15% (upper bound), just above an assumed 10-12% hurdle and falling for eight quarters.
+   Next year at flat capex needs $69-82B of profit growth (last year $91B). Oracle (6%) and
+   CoreWeave (negative) are below the hurdle. Candidate light v1.2: that 1-year figure below 12%.
+
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (51 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (55 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.

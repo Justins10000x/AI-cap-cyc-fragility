@@ -8,7 +8,20 @@ The governing thesis is deliberately modest: **you cannot reliably predict the t
 bubble, but you can characterise a regime with a stated error rate.** This repo holds itself
 to that, including when it means retracting its own earlier results.
 
-## Latest: are the earnings real? Depreciation (21 Nov 2026)
+## Latest: does the build-out earn its keep? Returns on capital (24 Nov 2026)
+
+![returns v1](results/returns_v1.png)
+
+- **Capital has more than doubled in two years** ($687B to $1,618B for the five hyperscalers)
+  while operating income rose by half. Return on physical capital is 41%, the lowest since 2016.
+- **The return on the last year's new capital is at most 15% pre-tax**, just above a 10-12%
+  hurdle, and has fallen in each of the last eight quarters.
+- **Next year at flat capex**, $686B of new capital needs $69-82B of profit growth to earn the
+  hurdle; last year's growth was $91B. If profit grows as much again, the new capital earns at
+  most 13.2%. Oracle (at most 6% on new capital) and CoreWeave (negative) are already below it. See
+  [`results/RESULTS_returns_v1.md`](results/RESULTS_returns_v1.md).
+
+## Are the earnings real? Depreciation (21 Nov 2026)
 
 ![depreciation v1](results/depreciation_v1.png)
 
@@ -140,7 +153,7 @@ in [`docs/roadmap_addendum_2026-09.md`](docs/roadmap_addendum_2026-09.md).
 
 ```bash
 pip install -r requirements.txt
-pytest -q                                  # 51 tests, ~1 min: every simulation claim above
+pytest -q                                  # 55 tests, ~1 min: every simulation claim above
 
 # real data (Yahoo prices, SEC revenue, FRED macro) into ./data, on your own machine:
 python src/fetch_data.py --sec-contact "Your Name you@example.com"
@@ -151,6 +164,8 @@ python src/circular_funding.py             # circular-funding ratio v1 -> result
 python src/make_figure_circular.py         # -> results/circular_v1.png
 python src/depreciation.py                 # depreciation v1 -> results/depreciation_*.csv
 python src/make_figure_depreciation.py     # -> results/depreciation_v1.png
+python src/returns.py                      # returns v1 (after depreciation.py) -> results/returns_*.csv
+python src/make_figure_returns.py          # -> results/returns_v1.png
 python src/run_v3.py                       # tests, FDR, episodes  -> results/*.csv   (~3 min)
 python src/size_study.py 400               # false-positive study  -> results/size_study.csv
 python src/boom_vs_bubble.py 300           # boom vs bubble        -> results/boom_vs_bubble.csv
@@ -184,6 +199,8 @@ src/
   runway.py                how long each hyperscaler can fund its gap from cash on hand
   depreciation.py          locked-in depreciation and server-life sensitivity (vintage model)
   make_figure_depreciation.py
+  returns.py               return on physical capital, return on new capital, hurdle test
+  make_figure_returns.py
   legacy_v2_cusum_monitor.py   withdrawn; kept for provenance
 tests/                     the claims, as tests (test_v3.py, test_valuation.py, test_circular.py)
 results/                   RESULTS_v3.md, tables, figure
