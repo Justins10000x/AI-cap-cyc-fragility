@@ -51,6 +51,8 @@ Nothing here is investment advice.
    **v1.1 (21 Nov 2026)** added E1a/E1b, the earnings squeeze (operating income down y/y while
    depreciation rises), computed from SEC data. Stated probabilities for the Oct-Dec 2026
    quarter (E1a 10%, E1b 15%) are in WATCHLIST.md; score them in a separate file in February.
+   **v1.2 (24 Nov 2026)** added E2: the five's return on the last year's new capital below 12%
+   (14.6% now). Stated probabilities: 20% on the Oct-Dec quarter, 55% by Jul-Sep 2027.
 
 12. **Depreciation** (`RESULTS_depreciation_v1.md`, `src/depreciation.py`): stated server
    lives are not what props up hyperscaler profit (a 4-year life costs 3-8% of operating
@@ -68,7 +70,7 @@ Nothing here is investment advice.
 ## Working rules (keep these)
 
 - A number goes in a write-up only if a script in `src/` produces it; simulation and
-  data-handling claims are enforced by `tests/` (55 tests, `pytest -q`).
+  data-handling claims are enforced by `tests/` (57 tests, `pytest -q`).
 - Quarterly SEC figures are derived from year-to-date filings and reconciled to the 10-K
   totals on every run (`circular_funding.reconcile`).
 - "n/t" means not tagged in the SEC data, never zero.
@@ -87,16 +89,30 @@ which fills `data/` (git-ignored). The assistant reads it through the connected 
 Commits are made locally as Justins10000x; the user runs `git push`.
 After a commit made through the linked shell, stale `.git/*.lock` files must be moved aside.
 
-## Next steps, in order
+## Next steps, in order (updated 24 Nov 2026)
 
-1. **Nvidia's October-quarter 10-Q** (results 17 Nov 2026): re-run the fetch, then
-   `circular_funding.py` and `filing_notes.py` (its patterns will need updating for the new
-   quarter's wording; it fails loudly rather than reuse old values).
-2. The demand-end model for Anthropic (disclose the conflict: the assistant is made by
-   Anthropic) and xAI; then how much of Oracle's and CoreWeave's backlog depends on OpenAI.
-3. Filing notes for the hyperscalers (lease commitments).
-3. Replicate Phillips-Shi-Yu (2015) on Shiller's S&P 500 data as external validation.
-4. Lease commitments for the hyperscalers (not in company facts; needs filing text).
+**Scheduled readings (do these when the data lands):**
+- Nvidia's October-quarter 10-Q (legal deadline ~4 Dec): re-run the fetch, `circular_funding.py`,
+  `filing_notes.py` (patterns will need updating), then score `PREDICTIONS_nvda_q3fy27.md` in a
+  separate file.
+- TSMC November revenue (~10 Dec) into `reported/watchlist_readings.csv`.
+- Oracle's November quarter (mid-Dec): the first Oct-Dec data point for E1b; E1a and E2 need all
+  five (early Feb). In February, score the E1/E2 probabilities in a separate file.
+
+**Research, in order:**
+1. **Market-implied fragility** (cheap, daily): how tightly AI stocks move together (absorption
+   ratio), equal-weight vs cap-weight breadth (RSP/SPY, already downloaded), and distance to
+   default for Oracle and CoreWeave. Needs more tickers in `fetch_data.py`.
+2. **Test the lights on past booms**: do the analogues of our lights (supplier shipments,
+   credit spreads, profits vs capital) lead the 2000 telecom/tech capex peak and later
+   semiconductor busts, and how often do they false-alarm? Free FRED/BEA/Census series back to
+   the 1990s. Needs new series in `fetch_data.py`.
+3. **How a shock spreads**: exposure map between Nvidia, OpenAI, Oracle, CoreWeave, Microsoft,
+   SoftBank, AMD; simulate an OpenAI funding shortfall through backlogs and revenue.
+4. **Hidden leverage**: leases signed but not started, data-centre joint ventures (filing text).
+5. **Speculation gauges**: share of loss-making IPOs (Ritter), margin debt, leveraged single-stock
+   ETFs, insider selling. Then faster supply-chain data (Korea chip exports) and a running
+   Brier scorecard across all stated probabilities.
 
 ## Known loose ends
 

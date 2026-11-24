@@ -95,3 +95,28 @@ def test_e1a_uses_only_quarters_all_five_reported_and_e1b_counts_breadth():
 def test_e1_waits_without_data():
     e = wl.evaluate(R(BASE), G([]))
     assert status(e, "E1a") == "waiting for data" and status(e, "E1b") == "waiting for data"
+
+
+# ---- v1.2: E2 return on new capital
+def RC(vals):
+    """vals: list of (quarter, op_income_4q, capital) -> combined returns frame like returns.combined."""
+    c = pd.DataFrame(vals, columns=["quarter", "op_income_4q", "capital"]).set_index("quarter")
+    c.index = pd.PeriodIndex(c.index, freq="Q")
+    c["incremental_4q"] = c.op_income_4q.diff(4) / c.capital.diff(4)
+    return c
+
+
+def test_e2_trips_below_floor_and_reports_next_bar():
+    q = ["2025Q3", "2025Q4", "2026Q1", "2026Q2", "2026Q3"]
+    low = RC(list(zip(q, [400, 410, 420, 430, 440], [1000, 1100, 1200, 1300, 1400])))
+    m = wl.marginal_return(low)
+    assert m["quarter"] == "2026Q3" and abs(m["value"] - 0.10) < 1e-12 and m["tripped"]   # 40/400 = 10%
+    # next quarter: capital 1500 (grows 100 again); base 2025Q4 (410, 1100): bar = 410 + 0.12 * 400
+    assert abs(m["next_bar"] - (410 + 0.12 * 400)) < 1e-9
+    ok = RC(list(zip(q, [400, 410, 420, 430, 460], [1000, 1100, 1200, 1300, 1400])))
+    e = wl.evaluate(R(BASE), G([]), None, ok)
+    assert status(e, "E2") == "clear"                                                     # 60/400 = 15%
+
+
+def test_e2_waits_without_data():
+    assert status(wl.evaluate(R(BASE), G([])), "E2") == "waiting for data"

@@ -81,6 +81,35 @@ assistant's judgement, not a model output.
 
 ## Status with v1.1: 0 tripped, 12 clear, 2 waiting for data
 
+## v1.2: return on new capital (added 24 November 2026)
+
+Added after returns v1 ([`results/RESULTS_returns_v1.md`](results/RESULTS_returns_v1.md)), before
+any company has filed for the October–December 2026 quarter. v1 and v1.1 are unchanged.
+
+| code | signal | trips when | baseline (Jul–Sep 2026) | next reading |
+|---|---|---|---|---|
+| E2 | **Return on new capital, all five**: pre-tax return on the capital added over the last year | the change in the five's combined 4-quarter operating income ÷ the change in their combined net property and equipment (incl. finance leases) over 4 quarters falls below **12%**, the top of the assumed 10–12% pre-tax hurdle | **14.6%**, down for eight quarters in a row (97% in mid-2024) | Oct–Dec quarter complete early Feb |
+
+**Rules.** Computed by `src/returns.py` from SEC filings: GAAP operating income as filed,
+capital as reported, and only quarters in which all five have filed. It is an upper bound on the
+return the AI capital earns, because all profit growth is credited to the new capital. So a trip
+is a strong signal, and staying clear is a weak one.
+
+**What the next quarter needs.** If capital grows in Oct–Dec as much as it did in Jul–Sep, E2 trips
+if the five's 4-quarter operating income is below **$538B** (now $527B). That means
+Oct–Dec operating income must grow about 9% on the year before, against 20.5% growth in
+Jul–Sep. A faster rise in capital raises the bar.
+
+**Stated probabilities, for scoring (written 24 Nov 2026, before the data).** These are the
+assistant's judgement, not a model output.
+- **E2 trips on the Oct–Dec 2026 quarter: 20%.** Profit growth has been running well above the
+  ~9% needed, but capital is rising faster each quarter.
+- **E2 trips on any quarter up to and including Jul–Sep 2027: 55%.** The measure has fallen about
+  one to two points a quarter recently (18.3%, 18.0%, 15.9%, 14.6%), and Alphabet, Amazon and Meta
+  have said 2027 capex will be higher than 2026's (see T1a baseline).
+
+## Status with v1.2: 0 tripped, 13 clear, 2 waiting for data
+
 ## Sources for the baselines
 
 - Capex guidance: [Meta Q3 2026 release (SEC 8-K)](https://www.sec.gov/Archives/edgar/data/0001326801/000162828026066700/meta-09302026xexhibit991.htm);
@@ -92,4 +121,4 @@ assistant's judgement, not a model output.
 - [GPU Rental Price Index, November 2026](https://gpurentalprices.com/gpu-price-index/2026-11)
 - [TrendForce sees DRAM price growth slowing after Q4 2026 (EconoTimes)](https://econotimes.com/TrendForce-Sees-DRAM-Price-Growth-Slowing-After-2026-Fourth-Quarter-1778815)
 - CoreWeave CDS: S&P Global Market Intelligence via [Reuters (AOL)](https://www.aol.com/articles/ai-data-center-stocks-slip-112314000.html)
-- Backlog, high-yield spread, CoreWeave interest, and E1 (operating income, depreciation): SEC company facts and FRED, refreshed by the script
+- Backlog, high-yield spread, CoreWeave interest, E1 (operating income, depreciation) and E2 (operating income, capital): SEC company facts and FRED, refreshed by the script

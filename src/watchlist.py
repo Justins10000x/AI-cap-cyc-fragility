@@ -37,6 +37,13 @@ E1_BREADTH = 2                # E1b: this many of the five in the squeeze in the
 #      while their combined depreciation is above it (only quarters in which all five have reported).
 # Operating income is GAAP as filed, no adjustments for one-off charges (no discretion after the fact).
 
+# ---- v1.2, added 24 November 2026 (after returns v1; before any October-December 2026 filing).
+# E2: the five's combined pre-tax return on the last year's new capital (change in 4-quarter
+#     operating income / change in net PP&E incl. finance leases, over 4 quarters; returns.py)
+#     below E2_FLOOR, the top of the assumed 10-12% pre-tax hurdle. Quarters with all five only.
+V12_ON = "2026-11-24"
+E2_FLOOR = 0.12
+
 
 def load_csv(path):
     return pd.DataFrame(list(csv.DictReader(open(path))))
@@ -148,7 +155,30 @@ def earnings_squeeze(p: pd.DataFrame) -> dict:
     return out
 
 
-def evaluate(r: pd.DataFrame, g: pd.DataFrame, earn: pd.DataFrame | None = None) -> pd.DataFrame:
+def returns_combined() -> pd.DataFrame | None:
+    """The five hyperscalers combined, by calendar quarter, from returns.py (needs data/)."""
+    if not all(os.path.exists(os.path.join(DATA, f"{c}_companyfacts.json")) for c in HYPERSCALERS):
+        return None
+    import returns as rt
+    return rt.combined(pd.concat([rt.company(c) for c in HYPERSCALERS]))
+
+
+def marginal_return(c: pd.DataFrame) -> dict:
+    """E2 on the latest quarter with all five, plus the 4-quarter operating income the next
+    quarter needs to stay clear if capital grows as much as it did in the latest quarter."""
+    q = c.incremental_4q.last_valid_index()      # keep earlier rows: the next-quarter bar needs them
+    cur = c.loc[q]
+    base = c.loc[q - 3] if (q - 3) in c.index else None
+    bar = None
+    if base is not None and (q - 1) in c.index:
+        k_next = cur.capital + (cur.capital - c.loc[q - 1].capital)
+        bar = base.op_income_4q + E2_FLOOR * (k_next - base.capital)
+    return dict(quarter=str(q), value=float(cur.incremental_4q), tripped=bool(cur.incremental_4q < E2_FLOOR),
+                next_quarter=str(q + 1), next_bar=bar, op_income_4q=float(cur.op_income_4q))
+
+
+def evaluate(r: pd.DataFrame, g: pd.DataFrame, earn: pd.DataFrame | None = None,
+             ret: pd.DataFrame | None = None) -> pd.DataFrame:
     out = []
     def row(code, name, reading, threshold, tripped, note=""):
         # bool() matters: numpy's True is not Python's True, so "is True" would hide real trips
@@ -226,6 +256,19 @@ def evaluate(r: pd.DataFrame, g: pd.DataFrame, earn: pd.DataFrame | None = None)
             "v1.1; " + (", ".join(c.upper() for c in e["squeezed"]) or "none"))
     else:
         row("E1b", "...the same squeeze at two or more of the five", "n/a", f">= {E1_BREADTH} in a calendar quarter", None, "v1.1")
+
+    # v1.2 (24 Nov 2026): return on new capital
+    m = marginal_return(ret) if ret is not None else None
+    if m is None:
+        row("E2", "five hyperscalers: pre-tax return on last year's new capital", "n/a", f"< {E2_FLOOR:.0%}",
+            None, "v1.2; needs SEC data in data/")
+    else:
+        note = "v1.2"
+        if m["next_bar"] is not None:
+            note += (f"; {m['next_quarter']} trips if 4-quarter op. income < ${m['next_bar']/1e9:.0f}B "
+                     f"(now ${m['op_income_4q']/1e9:.0f}B), if capital grows as in {m['quarter']}")
+        row("E2", "five hyperscalers: pre-tax return on last year's new capital",
+            f"{m['value']:.1%} ({m['quarter']})", f"< {E2_FLOOR:.0%}", m["tripped"], note)
     return pd.DataFrame(out)
 
 
@@ -233,10 +276,10 @@ if __name__ == "__main__":
     r = load_csv(os.path.join(ROOT, "reported", "watchlist_readings.csv"))
     r = refresh_filed(r)
     g = load_csv(os.path.join(ROOT, "reported", "capex_guidance.csv"))
-    e = evaluate(r, g, earnings_panel())
+    e = evaluate(r, g, earnings_panel(), returns_combined())
     os.makedirs(os.path.join(ROOT, "results"), exist_ok=True)
     e.to_csv(os.path.join(ROOT, "results", "watchlist_status.csv"), index=False)
     pd.set_option("display.width", 250); pd.set_option("display.max_colwidth", 70)
-    print(f"thresholds pre-registered {PREREGISTERED_ON} (v1); E1a/E1b added {V11_ON} (v1.1)\n")
+    print(f"thresholds pre-registered {PREREGISTERED_ON} (v1); E1a/E1b added {V11_ON} (v1.1); E2 added {V12_ON} (v1.2)\n")
     print(e.to_string(index=False))
     print(f"\n{(e.status == 'TRIPPED').sum()} tripped, {(e.status == 'clear').sum()} clear, {(e.status == 'waiting for data').sum()} waiting")
